@@ -1,4 +1,9 @@
-import swaggerJSDoc from "swagger-jsdoc"
+const swaggerJSDoc = require('swagger-jsdoc');
+
+const serverUrl =
+  process.env.NODE_ENV === "production"
+    ? "https://auth-system-9k3x.onrender.com"
+    : "http://localhost:3000";
 
 const options = {
   definition: {
@@ -6,15 +11,17 @@ const options = {
     info: {
       title: "Authentication API",
       version: "1.0.0",
-      description: "API de autenticación con JWT, roles y recuperación de contraseña"
+      description: "API de autenticación con JWT"
     },
     servers: [
       {
-        url: "http://localhost:3000"
+        url: serverUrl
       }
     ]
   },
-  apis: ["./src/routes/*.js"]
-}
+  apis: ["./routes/*.js"]
+};
 
-export const swaggerSpec = swaggerJSDoc(options)
+const swaggerSpec = swaggerJSDoc(options);
+
+module.exports = { swaggerSpec };
