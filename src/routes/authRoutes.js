@@ -1,3 +1,25 @@
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Registrar nuevo usuario
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Usuario creado correctamente
+ */
+
 const express = require('express');
 const router = express.Router();
 const {
@@ -9,6 +31,7 @@ const {
   resetPassword
 } = require('../controllers/authController');
 
+router.post("/register", registerUser);
 router.post('/logout', logout);
 router.post('/register', register);
 router.post('/login', login);
