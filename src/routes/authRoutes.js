@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const { z } = require('zod');
 
 const {
   register,
@@ -11,43 +10,9 @@ const {
   resetPassword
 } = require('../controllers/authController');
 
-// Esquemas de validación
-const registerSchema = z.object({
-  email: z.string().email('Email inválido'),
-  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres'),
-  name: z.string().optional()
-});
-
-const loginSchema = z.object({
-  email: z.string().email('Email inválido'),
-  password: z.string().min(1, 'La contraseña es requerida')
-});
-
-const forgotPasswordSchema = z.object({
-  email: z.string().email('Email inválido')
-});
-
-const resetPasswordSchema = z.object({
-  token: z.string().min(1, 'Token requerido'),
-  password: z.string().min(6, 'La contraseña debe tener al menos 6 caracteres')
-});
-
-// Middleware de validación
-const validate = (schema) => (req, res, next) => {
-  try {
-    req.body = schema.parse(req.body);
-    next();
-  } catch (error) {
-    return res.status(400).json({
-      message: 'Error de validación',
-      errors: error.errors
-    });
-  }
-};
-
 /**
  * @swagger
- * /api/auth/register:
+ * /auth/register:
  *   post:
  *     summary: Registrar nuevo usuario
  *     tags: [Auth]
@@ -63,23 +28,19 @@ const validate = (schema) => (req, res, next) => {
  *             properties:
  *               email:
  *                 type: string
- *                 format: email
+ *                 example: usuario@email.com
  *               password:
  *                 type: string
- *                 minLength: 6
- *               name:
- *                 type: string
+ *                 example: Password123
  *     responses:
  *       201:
  *         description: Usuario creado correctamente
- *       400:
- *         description: Error de validación
  */
-router.post('/register', validate(registerSchema), register);
+router.post('/register', register);
 
 /**
  * @swagger
- * /api/auth/login:
+ * /auth/login:
  *   post:
  *     summary: Iniciar sesión
  *     tags: [Auth]
@@ -95,24 +56,21 @@ router.post('/register', validate(registerSchema), register);
  *             properties:
  *               email:
  *                 type: string
- *                 format: email
+ *                 example: usuario@email.com
  *               password:
  *                 type: string
+ *                 example: Password123
  *     responses:
  *       200:
  *         description: Login exitoso
- *       400:
- *         description: Error de validación
- *       401:
- *         description: Credenciales inválidas
  */
-router.post('/login', validate(loginSchema), login);
+router.post('/login', login);
 
 /**
  * @swagger
- * /api/auth/refresh:
+ * /auth/refresh:
  *   post:
- *     summary: Refrescar token de acceso
+ *     summary: Obtener nuevo access token
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -125,15 +83,16 @@ router.post('/login', validate(loginSchema), login);
  *             properties:
  *               refreshToken:
  *                 type: string
+ *                 example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
  *     responses:
  *       200:
- *         description: Token refrescado
+ *         description: Token renovado
  */
 router.post('/refresh', refresh);
 
 /**
  * @swagger
- * /api/auth/logout:
+ * /auth/logout:
  *   post:
  *     summary: Cerrar sesión
  *     tags: [Auth]
@@ -156,9 +115,9 @@ router.post('/logout', logout);
 
 /**
  * @swagger
- * /api/auth/forgot-password:
+ * /auth/forgot-password:
  *   post:
- *     summary: Solicitar restablecimiento de contraseña
+ *     summary: Solicitar reset de contraseña
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -171,16 +130,16 @@ router.post('/logout', logout);
  *             properties:
  *               email:
  *                 type: string
- *                 format: email
+ *                 example: usuario@email.com
  *     responses:
  *       200:
- *         description: Email enviado
+ *         description: Token generado
  */
-router.post('/forgot-password', validate(forgotPasswordSchema), forgotPassword);
+router.post('/forgot-password', forgotPassword);
 
 /**
  * @swagger
- * /api/auth/reset-password:
+ * /auth/reset-password:
  *   post:
  *     summary: Restablecer contraseña
  *     tags: [Auth]
@@ -192,17 +151,17 @@ router.post('/forgot-password', validate(forgotPasswordSchema), forgotPassword);
  *             type: object
  *             required:
  *               - token
- *               - password
+ *               - newPassword
  *             properties:
  *               token:
  *                 type: string
- *               password:
+ *               newPassword:
  *                 type: string
- *                 minLength: 6
+ *                 example: NuevaPassword123
  *     responses:
  *       200:
  *         description: Contraseña actualizada
  */
-router.post('/reset-password', validate(resetPasswordSchema), resetPassword);
+router.post('/reset-password', resetPassword);
 
 module.exports = router;
