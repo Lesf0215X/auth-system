@@ -19,18 +19,22 @@ const errorHandler = require('./middlewares/errorMiddleware.js');
 const app = express();
 
 // Middlewares globales
-
+app.use(morgan("dev"));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
 // Swagger Documentation
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+const swaggerUiOptions = {
+    explorer: true
+};
 
-// Log Morgan
-
-app.use(morgan("dev"))
+app.use(
+    '/api-docs',
+    swaggerUi.serve,
+    swaggerUi.setup(swaggerSpec, swaggerUiOptions)
+);
 
 // Rate limiter para autenticación
 
@@ -45,10 +49,12 @@ const authLimiter = rateLimit({
 // Health Check (para Render)
 
 app.get('/health', (req, res) => {
-    res.status(200).json({
-        status: 'ok',
-        service: 'auth-system'
-    });
+  res.status(200).json({
+    status: "ok",
+    uptime: process.uptime(),
+    timestamp: new Date(),
+    service: "auth-system"
+  });
 });
 
 // Root endpoint
@@ -61,7 +67,7 @@ app.get('/', (req, res) => {
 
 // Aplicar rate limiter
 
-app.use('/api/auth/login', authLimiter);
+app.use('/api/auth', authLimiter);
 app.use('/api/auth/register', authLimiter);
 
 // Routes

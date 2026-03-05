@@ -4,7 +4,7 @@ const { generateAccessToken, generateRefreshToken } = require('../utils/jwt');
 const jwt = require('jsonwebtoken');
 const authService = require('../services/authService');
 const { registerSchema } = require('../validators/authValidator');
-
+const { registerSchema, loginSchema } = require('../validators/authValidator');
 
 
 const register = async (req, res, next) => {
@@ -23,9 +23,14 @@ const register = async (req, res, next) => {
 
 const login = async (req, res, next) => {
     try {
+
+        loginSchema.parse(req.body);
+
         const { email, password } = req.body;
         const tokens = await authService.loginUser(email, password);
+
         res.json(tokens);
+
     } catch (error) {
         next(error);
     }
