@@ -12,7 +12,7 @@ const {
 
 /**
  * @swagger
- * /auth/register:
+ * /api/auth/register:
  *   post:
  *     summary: Registrar nuevo usuario
  *     tags: [Auth]
@@ -40,7 +40,7 @@ router.post('/register', register);
 
 /**
  * @swagger
- * /auth/login:
+ * /api/auth/login:
  *   post:
  *     summary: Iniciar sesión
  *     tags: [Auth]
@@ -68,7 +68,7 @@ router.post('/login', login);
 
 /**
  * @swagger
- * /auth/refresh:
+ * /api/auth/refresh:
  *   post:
  *     summary: Obtener nuevo access token
  *     tags: [Auth]
@@ -92,7 +92,7 @@ router.post('/refresh', refresh);
 
 /**
  * @swagger
- * /auth/logout:
+ * /api/auth/logout:
  *   post:
  *     summary: Cerrar sesión
  *     tags: [Auth]
@@ -115,7 +115,7 @@ router.post('/logout', logout);
 
 /**
  * @swagger
- * /auth/forgot-password:
+ * /api/auth/forgot-password:
  *   post:
  *     summary: Solicitar reset de contraseña
  *     tags: [Auth]
@@ -139,7 +139,7 @@ router.post('/forgot-password', forgotPassword);
 
 /**
  * @swagger
- * /auth/reset-password:
+ * /api/auth/reset-password:
  *   post:
  *     summary: Restablecer contraseña
  *     tags: [Auth]
