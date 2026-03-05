@@ -1,12 +1,16 @@
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const crypto = require('crypto');
+
 const prisma = require('../utils/prisma');
 const { generateAccessToken, generateRefreshToken } = require('../utils/jwt');
-const jwt = require('jsonwebtoken');
+const generateResetToken = require('../utils/token');
+
 const authService = require('../services/authService');
-const { registerSchema } = require('../validators/authValidator');
 const { registerSchema, loginSchema } = require('../validators/authValidator');
 
 
+// Register
 const register = async (req, res, next) => {
     try {
         registerSchema.parse(req.body);
@@ -21,9 +25,10 @@ const register = async (req, res, next) => {
     }
 };
 
+
+// Login
 const login = async (req, res, next) => {
     try {
-
         loginSchema.parse(req.body);
 
         const { email, password } = req.body;
@@ -36,6 +41,8 @@ const login = async (req, res, next) => {
     }
 };
 
+
+// Refresh token 
 const refresh = async (req, res) => {
     const { refreshToken } = req.body;
 
@@ -54,11 +61,9 @@ const refresh = async (req, res) => {
             return res.status(403).json({ message: "Invalid refresh token - possible reuse detected" });
         }
 
-        // Generar nuevos tokens
         const newAccessToken = generateAccessToken(user);
         const newRefreshToken = generateRefreshToken(user);
 
-        // Guardar nuevo refresh token (rota el anterior)
         await prisma.user.update({
             where: { id: user.id },
             data: { refreshToken: newRefreshToken }
@@ -74,6 +79,8 @@ const refresh = async (req, res) => {
     }
 };
 
+
+// Logout
 const logout = async (req, res) => {
     const { refreshToken } = req.body;
 
@@ -96,9 +103,8 @@ const logout = async (req, res) => {
     }
 };
 
-const crypto = require('crypto');
-const generateResetToken = require('../utils/token');
 
+// Forgot pass
 const forgotPassword = async (req, res) => {
     const { email } = req.body;
 
@@ -112,6 +118,7 @@ const forgotPassword = async (req, res) => {
         }
 
         const resetToken = generateResetToken();
+
         const hashedToken = crypto
             .createHash('sha256')
             .update(resetToken)
@@ -121,14 +128,13 @@ const forgotPassword = async (req, res) => {
             where: { email },
             data: {
                 resetPasswordToken: hashedToken,
-                resetPasswordExpires: new Date(Date.now() + 15 * 60 * 1000) // 15 minuto
+                resetPasswordExpires: new Date(Date.now() + 15 * 60 * 1000) // 15 minutos
             }
         });
 
-        // Aquí se enviara el email
         res.json({
             message: "Password reset token generated",
-            resetToken // para pruebas
+            resetToken // solo para pruebas
         });
 
     } catch (error) {
@@ -136,6 +142,8 @@ const forgotPassword = async (req, res) => {
     }
 };
 
+
+// Reiniciar contraseña
 const resetPassword = async (req, res) => {
     const { token, newPassword } = req.body;
 
@@ -166,7 +174,7 @@ const resetPassword = async (req, res) => {
                 password: hashedPassword,
                 resetPasswordToken: null,
                 resetPasswordExpires: null,
-                refreshToken: null // invalida sesiones activas
+                refreshToken: null
             }
         });
 
@@ -178,8 +186,6 @@ const resetPassword = async (req, res) => {
 };
 
 
-
-
 module.exports = {
     register,
     login,
@@ -188,7 +194,3 @@ module.exports = {
     forgotPassword,
     resetPassword
 };
-
-
-
-
