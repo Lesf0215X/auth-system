@@ -18,6 +18,8 @@ const errorHandler = require('./middlewares/errorMiddleware.js');
 
 const app = express();
 
+app.set('trust proxy', 1);
+
 // Middlewares globales
 app.use(morgan("dev"));
 app.use(helmet());
