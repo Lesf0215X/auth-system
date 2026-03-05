@@ -34,26 +34,26 @@ El sistema incluye:
 El proyecto utiliza arquitectura por capas
 
 src
-│
-├── controllers
-│   Manejan las solicitudes y respuestas HTTP
-│
-├── services
-│   Contienen la lógica de negocio
-│
-├── routes
-│   Definen los endpoints de la API
-│
-├── middlewares
-│   Autenticación, autorización y seguridad
-│
-├── validators
-│   Esquemas de validación de datos
-│
-├── utils
-│   Utilidades (JWT, generación de tokens, Prisma)
-│
-└── server.js
+
+-controllers
+Manejan las solicitudes y respuestas HTTP
+
+-services
+Contienen la lógica de negocio
+
+-routes
+Definen los endpoints de la API
+
+-middlewares
+Autenticación, autorización y seguridad
+
+-validators
+Esquemas de validación de datos
+
+-utils
+Utilidades (JWT, generación de tokens, Prisma)
+
+-server.js
     Punto de entrada de la aplicación
 
 
@@ -67,8 +67,6 @@ Esta estructura mejora:
 -----------------------------------------------------------------------------------------------
 
 # Seguridad Implementada
-
-Este sistema incluye varias prácticas de seguridad utilizadas en aplicaciones reales:
 
 * Hash de contraseñas con **bcrypt**
 * Autenticación con **JSON Web Tokens (JWT)**
@@ -251,4 +249,4 @@ Incluye prácticas utilizadas en entornos reales como:
 
 # Autor
 
-Luis Enrique Soriano Flores.
+Luis Enrique Soriano Flores
