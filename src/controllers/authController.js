@@ -116,14 +116,14 @@ const forgotPassword = async (req, res) => {
             where: { email },
             data: {
                 resetPasswordToken: hashedToken,
-                resetPasswordExpires: new Date(Date.now() + 15 * 60 * 1000) // 15 min
+                resetPasswordExpires: new Date(Date.now() + 15 * 60 * 1000) // 15 minuto
             }
         });
 
-        // En producción aquí enviarías email
+        // Aquí se enviara el email
         res.json({
             message: "Password reset token generated",
-            resetToken // solo para pruebas
+            resetToken // para pruebas
         });
 
     } catch (error) {
