@@ -4,6 +4,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const swaggerUi = require('swagger-ui-express');
 require('dotenv').config();
+const morgan = require('morgan');
 
 // Swagger
 const { swaggerSpec } = require('./docs/swagger.js');
@@ -27,13 +28,17 @@ app.use(express.json());
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+// Log Morgan
+
+app.use(morgan("dev"))
+
 // Rate limiter para autenticación
 
 const authLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutos
     max: 10, // máximo 10 intentos
     message: {
-        message: 'Too many requests, try again later'
+        message: "Demasiadas peticiones desde esta IP, intenta más tarde."
     }
 });
 
