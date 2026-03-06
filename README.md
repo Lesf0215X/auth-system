@@ -209,13 +209,17 @@ http://localhost:3000
 
 -------------------------------------------------------------------------------------
 
-# Documentación de la API
+# API en Producción
 
-La documentación interactiva de la API está disponible en:
+La API está desplegada en Render:
 
-/api-docs
+https://auth-system-9k3x.onrender.com
 
-La documentación fue generada usando Swagger y permite probar todos los endpoints directamente desde el navegador.
+# Documentación interactiva
+
+La documentación Swagger puede probarse directamente en:
+
+https://auth-system-9k3x.onrender.com/api-docs
 
 ----------------------------------------------------------
 
