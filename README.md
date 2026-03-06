@@ -34,27 +34,27 @@ El sistema incluye:
 El proyecto utiliza arquitectura por capas
 
 src
-
--controllers
-Manejan las solicitudes y respuestas HTTP
-
--services
-Contienen la lógica de negocio
-
--routes
-Definen los endpoints de la API
-
--middlewares
-Autenticación, autorización y seguridad
-
--validators
-Esquemas de validación de datos
-
--utils
-Utilidades (JWT, generación de tokens, Prisma)
-
--server.js
-    Punto de entrada de la aplicación
+|
+|---controllers
+|   Manejan las solicitudes y respuestas HTTP
+|
+|---services
+|   Contienen la lógica de negocio
+|
+|---routes
+|   Definen los endpoints de la API
+|
+|---middlewares
+|   Autenticación, autorización y seguridad
+|
+|---validators
+|   Esquemas de validación de datos
+|
+|---utils
+|   Utilidades (JWT, generación de tokens, Prisma)
+|
+|---server.js
+|   Punto de entrada de la aplicación
 
 
 Esta estructura mejora:
