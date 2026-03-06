@@ -9,6 +9,8 @@ const generateResetToken = require('../utils/token');
 const authService = require('../services/authService');
 const { registerSchema, loginSchema } = require('../validators/authValidator');
 
+const { sendEmail } = require('../services/email.service');
+
 
 // Register
 const register = async (req, res, next) => {
@@ -128,13 +130,20 @@ const forgotPassword = async (req, res) => {
             where: { email },
             data: {
                 resetPasswordToken: hashedToken,
-                resetPasswordExpires: new Date(Date.now() + 15 * 60 * 1000) // 15 minutos
+                resetPasswordExpires: new Date(Date.now() + 15 * 60 * 1000)
             }
         });
 
+        const resetLink = `http://localhost:3000/reset-password/${resetToken}`;
+
+        await sendEmail(
+            user.email,
+            "Recuperación de contraseña",
+            `Haz clic en el siguiente enlace para restablecer tu contraseña: ${resetLink}`
+        );
+
         res.json({
-            message: "Password reset token generated",
-            resetToken // solo para pruebas
+            message: "Password reset email sent"
         });
 
     } catch (error) {
