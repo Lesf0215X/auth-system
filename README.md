@@ -20,6 +20,7 @@ El sistema incluye:
 * Control de acceso basado en roles (RBAC)
 * Rutas protegidas
 * Recuperación de contraseña segura con tokens que expiran
+* Envío de correos electrónicos para recuperación de contraseña
 * Cierre de sesión con invalidación del refresh token
 * Protección contra ataques de fuerza bruta
 * Headers HTTP seguros
@@ -79,7 +80,23 @@ Esta estructura mejora:
 * Protección contra ataques de fuerza bruta con **rate limiting**
 * Headers HTTP seguros usando **Helmet**
 
------------------------------------------
+------------------------------------------------------------------------------------------
+
+# Sistema de Emails
+
+El sistema incluye envío de correos electrónicos para la recuperación de contraseña.
+
+Cuando un usuario solicita restablecer su contraseña:
+
+1. Se genera un token seguro aleatorio.
+2. El token se almacena en la base de datos con una fecha de expiración.
+3. Se envía un correo electrónico al usuario con un enlace de recuperación.
+4. El usuario utiliza ese enlace para establecer una nueva contraseña.
+5. Una vez utilizada, la contraseña se actualiza y el token se invalida.
+
+Este mecanismo evita que las contraseñas se envíen por correo y garantiza que los enlaces de recuperación tengan un tiempo limitado de uso.
+
+--------------------------------------------------------------------------------------------------------------------------------------------
 
 # Tecnologías Utilizadas
 
@@ -117,7 +134,6 @@ Debes crear un archivo `.env` en la raíz del proyecto.
 
 Ejemplo:
 
-
 DATABASE_URL=tu_url_de_base_de_datos
 
 JWT_ACCESS_SECRET=tu_secreto_access
@@ -125,6 +141,11 @@ JWT_REFRESH_SECRET=tu_secreto_refresh
 
 ACCESS_TOKEN_EXPIRES=15m
 REFRESH_TOKEN_EXPIRES=7d
+
+EMAIL_USER=correo_que_envia
+EMAIL_PASS=contraseña_de_aplicacion
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
 
 PORT=3000
 
@@ -186,6 +207,16 @@ http://localhost:3000
 ### Restablecer contraseña
 
   POST /api/auth/reset-password
+
+-------------------------------------------------------------------------------------
+
+# Documentación de la API
+
+La documentación interactiva de la API está disponible en:
+
+/api-docs
+
+La documentación fue generada usando Swagger y permite probar todos los endpoints directamente desde el navegador.
 
 ----------------------------------------------------------
 
