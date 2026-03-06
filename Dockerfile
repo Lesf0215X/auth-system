@@ -2,16 +2,16 @@ FROM node:20
 
 WORKDIR /app
 
+# copiar package.json
 COPY package*.json ./
 
-RUN npm install
-
-# Copiar prisma schema antes de generar cliente
+# copiar prisma schema antes de instalar dependencias
 COPY prisma ./prisma
 
-RUN npx prisma generate
+# instalar dependencias (esto ejecutará postinstall -> prisma generate)
+RUN npm install
 
-# Ahora copiar el resto del proyecto
+# copiar el resto del proyecto
 COPY . .
 
 EXPOSE 3000
