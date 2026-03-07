@@ -283,4 +283,4 @@ Incluye prácticas utilizadas en entornos reales como:
 
 # Autor
 
-Luis Enrique Soriano Flores
+Luis E. 
