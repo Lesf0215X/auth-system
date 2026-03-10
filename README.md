@@ -1,286 +1,317 @@
-# Sistema de Autenticación Backend
+# Auth System
 
-Sistema de autenticación completo desarrollado con Node.js, Express, Prisma y PostgreSQL.
+Sistema de autenticación backend seguro desarrollado con **Node.js, Express, Prisma y PostgreSQL**.
 
-Este proyecto implementa una arquitectura segura de autenticación con **Access Tokens, Refresh Token Rotation, recuperación de contraseña, control de roles y múltiples capas de seguridad**.
+Este proyecto implementa una arquitectura moderna de autenticación basada en **Access Tokens + Refresh Tokens**, incluyendo rotación de tokens, recuperación de contraseña y control de acceso por roles.
 
-**Arquitectura backend lista para producción**
+El objetivo del proyecto es demostrar la implementación de un **sistema de autenticación listo para producción** siguiendo buenas prácticas utilizadas en aplicaciones reales.
 
----------------------------------------------------------
+---
 
 # Características
 
-El sistema incluye:
+- Registro de usuarios
+- Inicio de sesión seguro
+- Hash de contraseñas con **bcrypt**
+- Autenticación con **JWT**
+- Arquitectura **Access Token + Refresh Token**
+- **Rotación de Refresh Tokens**
+- Recuperación de contraseña segura
+- Envío de correos electrónicos
+- Control de acceso basado en roles (**RBAC**)
+- Rutas protegidas
+- Protección contra **ataques de fuerza bruta**
+- **Rate limiting**
+- Headers HTTP seguros con **Helmet**
+- Validación de datos con **Zod**
+- Arquitectura backend por capas
 
-* Registro de usuarios
-* Inicio de sesión seguro
-* Hash de contraseñas con bcrypt
-* Autenticación con Access Token + Refresh Token
-* Rotación de Refresh Tokens
-* Control de acceso basado en roles (RBAC)
-* Rutas protegidas
-* Recuperación de contraseña segura con tokens que expiran
-* Envío de correos electrónicos para recuperación de contraseña
-* Cierre de sesión con invalidación del refresh token
-* Protección contra ataques de fuerza bruta
-* Headers HTTP seguros
-* Manejo global de errores
-* Validación de datos de entrada
-* Base de datos PostgreSQL con Prisma ORM
-
-------------------------------------------------------------
-
-# Arquitectura del Proyecto
-
-El proyecto utiliza arquitectura por capas
-
-src
-|
-|---controllers
-|   Manejan las solicitudes y respuestas HTTP
-|
-|---services
-|   Contienen la lógica de negocio
-|
-|---routes
-|   Definen los endpoints de la API
-|
-|---middlewares
-|   Autenticación, autorización y seguridad
-|
-|---validators
-|   Esquemas de validación de datos
-|
-|---utils
-|   Utilidades (JWT, generación de tokens, Prisma)
-|
-|---server.js
-|   Punto de entrada de la aplicación
-
-
-Esta estructura mejora:
-
-* Mantenibilidad del código
-* Escalabilidad del sistema
-* Claridad del proyecto
-* Facilidad para realizar pruebas
-
------------------------------------------------------------------------------------------------
-
-# Seguridad Implementada
-
-* Hash de contraseñas con **bcrypt**
-* Autenticación con **JSON Web Tokens (JWT)**
-* Arquitectura **Access Token + Refresh Token**
-* **Rotación de Refresh Tokens**
-* Almacenamiento del refresh token en base de datos
-* Tokens seguros para recuperación de contraseña
-* Expiración automática de tokens
-* Protección de rutas basada en roles
-* Protección contra ataques de fuerza bruta con **rate limiting**
-* Headers HTTP seguros usando **Helmet**
-
-------------------------------------------------------------------------------------------
-
-# Sistema de Emails
-
-El sistema incluye envío de correos electrónicos para la recuperación de contraseña.
-
-Cuando un usuario solicita restablecer su contraseña:
-
-1. Se genera un token seguro aleatorio.
-2. El token se almacena en la base de datos con una fecha de expiración.
-3. Se envía un correo electrónico al usuario con un enlace de recuperación.
-4. El usuario utiliza ese enlace para establecer una nueva contraseña.
-5. Una vez utilizada, la contraseña se actualiza y el token se invalida.
-
-Este mecanismo evita que las contraseñas se envíen por correo y garantiza que los enlaces de recuperación tengan un tiempo limitado de uso.
-
---------------------------------------------------------------------------------------------------------------------------------------------
+---
 
 # Tecnologías Utilizadas
 
 Backend:
 
-* Node.js
-* Express.js
+    Node.js
+    Express.js
 
 Autenticación y seguridad:
 
-* JSON Web Tokens (JWT)
-* bcrypt
-* express-rate-limit
-* helmet
+    JSON Web Tokens (JWT)
+    bcrypt
+    express-rate-limit
+    helmet
 
 Base de datos:
 
-* PostgreSQL
-* Prisma ORM
+    PostgreSQL
+    Prisma ORM
 
 Validación:
 
-* Zod
+    Zod
 
 Herramientas de desarrollo:
 
-* Nodemon
-* Docker
+    Nodemon
+    Docker
 
----------------------------------------------------------------
+---
+
+# Arquitectura del Proyecto
+
+El proyecto sigue una arquitectura por capas para mejorar la mantenibilidad y escalabilidad.
+
+
+src
+│
+├── controllers
+│ Manejan requests y responses
+│
+├── services
+│ Lógica de negocio
+│
+├── routes
+│ Endpoints de la API
+│
+├── middlewares
+│ Autenticación y autorización
+│
+├── validators
+│ Validación de datos
+│
+├── utils
+│ Utilidades (JWT, Prisma, helpers)
+│
+├── server.js
+│ Punto de entrada de la aplicación
+
+
+Esta arquitectura permite:
+
+- separar responsabilidades
+- escalar el proyecto fácilmente
+- mejorar mantenibilidad
+- facilitar testing
+
+---
+
+# Seguridad Implementada
+
+El sistema incluye múltiples capas de seguridad:
+
+- Hash de contraseñas con **bcrypt**
+- Tokens **JWT**
+- Arquitectura **Access + Refresh Tokens**
+- **Rotación de refresh tokens**
+- Tokens seguros para recuperación de contraseña
+- Expiración automática de tokens
+- Protección contra **brute force**
+- Seguridad HTTP con **Helmet**
+- Validación de datos de entrada
+
+---
+
+# Recuperación de Contraseña
+
+El sistema incluye un flujo seguro para recuperación de contraseña.
+
+Proceso:
+
+1. El usuario solicita recuperación de contraseña.
+2. Se genera un **token seguro aleatorio**.
+3. El token se guarda en base de datos con expiración.
+4. Se envía un correo electrónico con un enlace.
+5. El usuario establece una nueva contraseña.
+6. El token se invalida automáticamente.
+
+Esto evita enviar contraseñas por correo y protege contra ataques.
+
+---
 
 # Variables de Entorno
 
-Debes crear un archivo `.env` en la raíz del proyecto.
+Crear un archivo `.env` en la raíz del proyecto.
 
-Ejemplo:
 
-DATABASE_URL=tu_url_de_base_de_datos
+DATABASE_URL=postgresql://user:password@localhost:5432/authdb
 
-JWT_ACCESS_SECRET=tu_secreto_access
-JWT_REFRESH_SECRET=tu_secreto_refresh
+JWT_ACCESS_SECRET=your_access_secret
+JWT_REFRESH_SECRET=your_refresh_secret
 
 ACCESS_TOKEN_EXPIRES=15m
 REFRESH_TOKEN_EXPIRES=7d
 
-EMAIL_USER=correo_que_envia
-EMAIL_PASS=contraseña_de_aplicacion
 EMAIL_HOST=smtp.gmail.com
 EMAIL_PORT=587
+EMAIL_USER=your_email
+EMAIL_PASS=your_app_password
 
 PORT=3000
 
-----------------------------------------------------------------------
+
+---
 
 # Instalación
 
-Clonar el repositorio:
+Clonar repositorio
 
-git clone https://github.com/tuusuario/auth-system.git
 
-Instalar dependencias:
+git clone https://github.com/Lesf0215X/auth-system.git
+
+
+Entrar al proyecto
+
+
+cd auth-system
+
+
+Instalar dependencias
+
 
 npm install
 
-Ejecutar migraciones de base de datos:
+
+Ejecutar migraciones
+
 
 npx prisma migrate dev
 
-Crear usuario administrador con seed:
 
-npx prisma db seed
+Ejecutar servidor
 
-Ejecutar el servidor:
 
 npm run dev
 
-El servidor se ejecutará en:
+
+Servidor disponible en
+
 
 http://localhost:3000
 
------------------------------------------------------------------------------
 
-# Endpoints de la API
+---
+
+# Endpoints Principales
 
 ## Autenticación
 
-### Registro de usuario
+### Registro
 
-  POST /api/auth/register
 
-### Inicio de sesión
+POST /api/auth/register
 
-  POST /api/auth/login
 
-### Renovar Access Token
+### Login
 
-  POST /api/auth/refresh
 
-### Cerrar sesión
+POST /api/auth/login
 
-  POST /api/auth/logout
 
-### Solicitar recuperación de contraseña
+### Refresh Token
 
-  POST /api/auth/forgot-password
+
+POST /api/auth/refresh
+
+
+### Logout
+
+
+POST /api/auth/logout
+
+
+---
+
+## Recuperación de contraseña
+
+### Solicitar recuperación
+
+
+POST /api/auth/forgot-password
+
 
 ### Restablecer contraseña
 
-  POST /api/auth/reset-password
 
--------------------------------------------------------------------------------------
+POST /api/auth/reset-password
 
-# API en Producción
 
-La API está desplegada en Render:
-
-https://auth-system-9k3x.onrender.com
-
-# Documentación interactiva
-
-La documentación Swagger puede probarse directamente en:
-
-https://auth-system-9k3x.onrender.com/api-docs
-
-----------------------------------------------------------
+---
 
 # Rutas Protegidas
 
 ### Perfil de usuario
 
-  GET /api/user/profile
 
-Requiere header:
+GET /api/user/profile
 
-  Authorization: Bearer ACCESS_TOKEN
 
----------------------------------------------------
+Header requerido:
 
-### Ruta para administrador
+
+Authorization: Bearer ACCESS_TOKEN
+
+
+---
+
+### Ruta de administrador
+
 
 GET /api/user/admin
 
+
 Requiere:
 
-* Access Token válido
-* Rol de administrador
+- Access token válido
+- Rol **admin**
 
------------------------------------------------------------
+---
 
 # Docker
 
-Construir la imagen:
+Construir imagen
 
-  docker build -t auth-system .
 
-Ejecutar el contenedor:
+docker build -t auth-system .
 
-  docker run -p 3000:3000 auth-system
 
--------------------------------------------------------------------
+Ejecutar contenedor
 
-# Despliegue
 
-El proyecto está listo para desplegarse en servicios como:
+docker run -p 3000:3000 auth-system
 
-* Render
-* Railway
-* Servidores con Docker
 
---------------------------------------------------------------------------------------------------------------------------------------------
+---
+
+# API desplegada
+
+
+https://auth-system-9k3x.onrender.com
+
+
+---
+
+# Documentación Swagger
+
+
+https://auth-system-9k3x.onrender.com/api-docs
+
+
+---
 
 # Objetivo del Proyecto
 
-Este proyecto fue desarrollado para demostrar la implementación de un sistema de autenticación seguro utilizado en aplicaciones modernas.
+Este proyecto fue desarrollado como parte de un portafolio profesional para demostrar conocimientos en:
 
-Incluye prácticas utilizadas en entornos reales como:
+- Arquitectura backend
+- Seguridad en autenticación
+- Diseño de APIs
+- Manejo de tokens JWT
+- Control de acceso por roles
+- Buenas prácticas en Node.js
 
-* Rotación de tokens
-* Autorización basada en roles
-* Recuperación segura de contraseña
-* Arquitectura backend por capas
-
---------------------------------------------------------------------------------------------------------------
+---
 
 # Autor
 
-Luis E. 
+**Luis E.S.F.
