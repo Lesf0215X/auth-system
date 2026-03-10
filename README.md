@@ -62,7 +62,7 @@ Herramientas de desarrollo:
 
 El proyecto sigue una arquitectura por capas para mejorar la mantenibilidad y escalabilidad.
 
-
+´´´
 src
 │
 ├── controllers
@@ -85,7 +85,7 @@ src
 │
 ├── server.js
 │ Punto de entrada de la aplicación
-
+´´´
 
 Esta arquitectura permite:
 
@@ -314,4 +314,4 @@ Este proyecto fue desarrollado como parte de un portafolio profesional para demo
 
 # Autor
 
-**Luis E.S.F.
+Luis E.S.F.
