@@ -62,7 +62,7 @@ Herramientas de desarrollo:
 
 El proyecto sigue una arquitectura por capas para mejorar la mantenibilidad y escalabilidad.
 
-```text
+```
 src/
 │
 ├── controllers/
@@ -85,6 +85,8 @@ src/
 │
 └── server.js
     Punto de entrada de la aplicación
+
+```
 
 Esta arquitectura permite:
 
