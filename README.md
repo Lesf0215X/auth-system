@@ -62,30 +62,29 @@ Herramientas de desarrollo:
 
 El proyecto sigue una arquitectura por capas para mejorar la mantenibilidad y escalabilidad.
 
-´´´
-src
+```text
+src/
 │
-├── controllers
-│ Manejan requests y responses
+├── controllers/
+│   Manejan las solicitudes y respuestas HTTP
 │
-├── services
-│ Lógica de negocio
+├── services/
+│   Contienen la lógica de negocio
 │
-├── routes
-│ Endpoints de la API
+├── routes/
+│   Definen los endpoints de la API
 │
-├── middlewares
-│ Autenticación y autorización
+├── middlewares/
+│   Autenticación, autorización y seguridad
 │
-├── validators
-│ Validación de datos
+├── validators/
+│   Esquemas de validación de datos
 │
-├── utils
-│ Utilidades (JWT, Prisma, helpers)
+├── utils/
+│   Utilidades (JWT, generación de tokens, Prisma)
 │
-├── server.js
-│ Punto de entrada de la aplicación
-´´´
+└── server.js
+    Punto de entrada de la aplicación
 
 Esta arquitectura permite:
 
